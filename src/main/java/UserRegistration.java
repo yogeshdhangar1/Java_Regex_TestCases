@@ -1,92 +1,95 @@
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+class InvalidDetailsException extends Exception{
+    InvalidDetailsException (String giveMessage){
+        System.out.println(giveMessage);
+    }
+}
 public class UserRegistration {
-    public static boolean CheckFirstName(String fName){
-       String nameCondition = "[A-Z]{1}[a-z]{2,}";
+    public static boolean checkFirstName(String fName) throws InvalidDetailsException {
+        String nameCondition = "[A-Z]{1}[a-z]{2,}";
         Pattern pattern = Pattern.compile(nameCondition);
         Matcher fMatcher = pattern.matcher(fName);
-        if(fMatcher.matches()) {
+        if (fMatcher.matches()) {
             System.out.println("Valid Input");
-        }
-        else {
-            System.out.println("Invalid Input");
+        } else {
+            throw new InvalidDetailsException("Invalid Input");
         }
         return fMatcher.matches();
     }
-    public static boolean CheckLastName(String lastName) {
+
+    public static boolean checkLastName(String lastName) throws InvalidDetailsException {
         String nameCondition = "[A-Z]{1}[a-z]{2,}";
         Pattern pattern = Pattern.compile(nameCondition);
         Matcher lName = pattern.matcher(lastName);
-        if(lName.matches()) {
+        if (lName.matches()) {
             System.out.println("Valid Input");
-        }
-        else {
-            System.out.println("Invalid Input");
+        } else {
+            throw new InvalidDetailsException("Invalid Input");
         }
         return lName.matches();
     }
-    public static boolean CheckEmail(String Email){
-        String emailCondition = "\"[abc]{3}([-+_])?([.][a-zA-Z0-9]{2})?([A-Za-z0-9]{1,})?@[a-z0-9]{1,}.[a-z]{2,3}(.[a-z]{2,3})?\"";
+
+    public static boolean checkEmail(String emailId) throws InvalidDetailsException {
+        String emailCondition = "[abc]{3}([-+_])?([.][a-zA-Z0-9]{2})?([A-Za-z0-9]{1,})?@[a-z0-9]{1,}.[a-z]{2,3}(.[a-z]{2,3})?";
         Pattern pattern = Pattern.compile(emailCondition);
-        Matcher email = pattern.matcher(Email);
-        if(email.matches()){
-            System.out.println("Valid Input");
-        }else{
-            System.out.println("invalid Input");
+        Matcher email = pattern.matcher(emailId);
+        if (email.matches()) {
+            System.out.println(emailId + " Valid Input");
+        } else {
+            throw new InvalidDetailsException(emailId + " Invalid Input");
         }
         return email.matches();
     }
-    public static boolean CheckMobileNum(String MobileNum){
-        String NumberCondition = "^(91)()[6-9]{1}[0-9]{9}$";
-        Pattern pattern = Pattern.compile(NumberCondition);
-        Matcher num = pattern.matcher(MobileNum);
-        if(num.matches()){
-            System.out.println("Valid Input");
-        }else{
-            System.out.println("Invalid Input");
-        }
-        return num.matches();
-    }
-    public static boolean CheckPass(String Password){
-        String passCondition = "^(?=.*[@!#$%&*?])(?=.*[0-9])(?=.*[A-Z])[a-zA-Z0-9@!#$%&*?]{8,}$";
-        Pattern pattern = Pattern.compile(passCondition);
-        Matcher p = pattern.matcher(Password);
-        if(p.matches()) {
-            System.out.println("valid Input");
-        }else{
-            System.out.println("Invalid Input");
-        }
-        return p.matches();
-    }
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter the First name");
-        String fName = sc.nextLine();
-        CheckFirstName(fName);
-        System.out.println("Enter the Last name");
-        String lastName = sc.nextLine();
-        CheckLastName(lastName);
-        String validEmailId [] = {"abc@yahoo.com","abc-100@yahoo.com","abc-100@yahoo.com",
-                "abc111@abc.com","abc-100@abc.net","abc.100@abc.com.au",
-                "abc@1.com","abc@gmail.com.com","abc+100@gmail.com",
-                "abc","abc@.com.my","abc123@gmail.a","abc123@.com",
-                "abc123@.com.com",".abc@abc.com","abc()*@gmail.com",
-                "abc@%*.com","abc..2002@gmail.com","abc.@gmail.com",
-                "abc@abc@gmail.com","abc@gmail.com.1a","abc@gmail.com.aa.au",
-                "abc1..@gmail.com"};
-        for (int i =0;i<validEmailId.length;i++) {
-            CheckEmail(validEmailId[i]);
+    public static boolean checkPassword(String password) throws InvalidDetailsException {
+        String nameCondition = "^(?=.*[@!#$%&*?])(?=.*[0-9])(?=.*[A-Z])[a-zA-Z0-9@!#$%&*?]{8,}$";//atleast one uppercase
+        Pattern pattern = Pattern.compile(nameCondition);
+        Matcher matcher = pattern.matcher(password);
+        if (matcher.matches()) {
+            System.out.println("Valid Input");
+        } else {
+            throw new InvalidDetailsException("Invalid Input");
         }
-        System.out.println("Enter the mobile number");
-        String mobileNumber = sc.nextLine();
-        CheckMobileNum(mobileNumber);
-        System.out.println("Enter the password");
-        String password = sc.nextLine();
-        CheckPass(password);
-        sc.close();
+        return matcher.matches();
+    }
+    public static void main(String[] args) {
+        try {
+            checkFirstName("Yogesh");
+        } catch (Exception e) {
+            System.out.println("Enter the proper input");
+        }
+        //Check Last Name with try and catch and throw custom exception
+        try {
+            checkLastName("Dhangar");
+        } catch (Exception e) {
+            System.out.println("Enter the proper input");
+        }
+        //Check Email with try and catch and throw custom exception
+        String validEmailId[] = {"abc@yahoo.com", "abc-100@yahoo.com", "abc-100@yahoo.com",
+                "abc111@abc.com", "abc-100@abc.net", "abc.100@abc.com.au",
+                "abc@1.com", "abc@gmail.com.com", "abc+100@gmail.com",
+                "abc", "abc@.com.my", "abc123@gmail.a", "abc123@.com",
+                "abc123@.com.com", ".abc@abc.com", "abc()*@gmail.com",
+                "abc@%*.com", "abc..2002@gmail.com", "abc.@gmail.com",
+                "abc@abc@gmail.com", "abc@gmail.com.1a", "abc@gmail.com.aa.au",
+                "abc1..@gmail.com"};
+        for (int i = 0; i < validEmailId.length; i++) {
+            try {
+                checkEmail(validEmailId[i]);
+            } catch (Exception e) {
+                System.out.println("Enter the proper input");
+            }
+        }
+
+        try {
+            checkPassword("BridgeLabz@RFP167");
+        } catch (Exception e) {
+            System.out.println("Enter the proper input");
+        }
     }
 }
+
 
 
