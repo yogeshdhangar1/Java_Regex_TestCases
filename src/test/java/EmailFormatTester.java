@@ -1,10 +1,8 @@
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.runners.Parameterized;
-
 import java.util.Arrays;
 import java.util.Collection;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 public class EmailFormatTester {
     private String email;
@@ -34,7 +32,6 @@ public class EmailFormatTester {
                 {"abc@abc@gmail.com",false},{"abc@gmail.com.1a",false},
                 {"abc@gmail.com.aa.au",false},{"abc1..@gmail.com",false} });
     }
-
     @Test
     public void givenEmailAsVar_ShouldReturnAsPerParameterizedResult() {
         UserRegistration obj1 = new UserRegistration();
